@@ -1,0 +1,13 @@
+.select2-container{
+	width: 50% !important;
+
+}
+
+@media (min-width: 0px) and (max-width: 991px)
+{
+	.select2-container
+	{
+		width: 90% !important;
+	}
+	  
+}
