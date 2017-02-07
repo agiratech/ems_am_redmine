@@ -13,6 +13,6 @@ Rails.application.config.to_prepare do
 	ApplicationHelper.send(:include, ApplicationHelperPatch)
 	IssuesController.send(:include,IssuesControllerPatch)
   Query.send(:include,QueryPatch)
+  IssueQuery.send(:include,IssueQueryPatch)
   ProjectsController.send(:include,ProjectsControllerPatch)
-  CalendarsController.send(:include,CalendarsControllerPatch)
 end
