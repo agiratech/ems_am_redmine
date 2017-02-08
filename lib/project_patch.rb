@@ -10,7 +10,7 @@ module ProjectPatch
 			if User.current.admin?
 				Project.active
 			else
-				User.last.projects.active && Project.where(is_public:true).active
+				User.last.projects.active
 			end
 		end
 	end
