@@ -31,8 +31,14 @@ module ProjectsControllerPatch
 			@open_issues_by_tracker = Issue.visible.open.where(cond).group(:tracker).count
 			@total_issues_by_tracker = Issue.visible.where(cond).group(:tracker).count
 
-			if User.current.allowed_to_view_all_time_entries?(@project)
-				@total_hours = TimeEntry.visible.where(project_cond).sum(:hours).to_f
+			if Redmine::VERSION::MAJOR >= 3 && Redmine::VERSION::MINOR > 0
+				if User.current.allowed_to_view_all_time_entries?(@project)
+					@total_hours = TimeEntry.visible.where(project_cond).sum(:hours).to_f
+				end
+			else
+				if User.current.allowed_to?(:view_time_entries, @project)
+					@total_hours = TimeEntry.visible.where(project_cond).sum(:hours).to_f
+				end
 			end
 
 			@key = User.current.rss_key
