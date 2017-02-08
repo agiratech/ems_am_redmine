@@ -21,7 +21,7 @@ module ProjectsControllerPatch
 			@users_by_role = @project.users_by_role
 			@subprojects = @project.children.visible.to_a
 			@news = @project.news.limit(5).includes(:author, :project).reorder("#{News.table_name}.created_on DESC").to_a
-			@trackers = @project.rolled_up_trackers.visible
+			@trackers = @project.rolled_up_trackers
 			project_cond = @project.project_condition(Setting.display_subprojects_issues?)
 			cond = "#{project_cond} OR #{Issue.table_name}.id IN (SELECT issue_id FROM issues_projects WHERE project_id = #{@project.id})"
 			@open_issues_by_tracker = Issue.visible.open.where(cond).group(:tracker).count

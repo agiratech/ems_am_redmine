@@ -3,7 +3,7 @@ Redmine::Plugin.register :ems_am_redmine do
   author 'Agira Technologies'
   description 'This is a plugin for Redmine'
   version '0.0.1'
-  url 'https://github.com/agiratech/ems_am_redmine'
+  url 'http://www.agiratech.com/'
   author_url 'http://www.agiratech.com/'
 end
 

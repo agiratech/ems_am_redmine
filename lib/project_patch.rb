@@ -1,5 +1,4 @@
 module ProjectPatch
-
 	def self.included(base)
 		base.send(:include, InstanceMethods)
 		base.class_eval do
@@ -16,3 +15,4 @@ module ProjectPatch
 		end
 	end
 end
+

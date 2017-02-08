@@ -5,7 +5,7 @@
 <%= call_hook(:view_issues_form_details_top, { :issue => @issue, :form => f }) %>
 <%= hidden_field_tag 'form_update_triggered_by', '' %>
 <% if @issue.safe_attribute? 'is_private' %>
-<p id="issue_is_private_wrap">
+<p style="float:right; margin-right:1em;">
   <%= f.check_box :is_private, :no_label => true %><label class="inline" for="issue_is_private" id="issue_is_private_label"><%= l(:field_is_private) %></label>
 </p>
 <% end %>
@@ -16,7 +16,7 @@
 <% end %>
 
 <% if @issue.safe_attribute? 'tracker_id' %>
-<p><%= f.select :tracker_id, trackers_options_for_select(@issue), {:required => true},
+<p><%= f.select :tracker_id, @issue.project.trackers.collect {|t| [t.name, t.id]}, {:required => true},
                 :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
 <% end %>
 
