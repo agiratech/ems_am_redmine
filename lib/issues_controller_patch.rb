@@ -27,9 +27,10 @@ module IssuesControllerPatch
 				end
 				@projects.uniq!
 			end
+			@issue.project_ids = []
 			@issue.save_attachments(params[:attachments] || (params[:issue] && params[:issue][:uploads]))
 			if @issue.save
-				@issue.projects << @projects
+				@issue.projects << @projects if @projects
 				call_hook(:controller_issues_new_after_save, { :params => params, :issue => @issue})
 				respond_to do |format|
 					format.html {
