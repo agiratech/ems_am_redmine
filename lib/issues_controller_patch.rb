@@ -70,7 +70,11 @@ module IssuesControllerPatch
 	      flash[:notice] = l(:notice_successful_update) unless @issue.current_journal.new_record?
 
 	      respond_to do |format|
-	        format.html { redirect_back_or_default issue_path(@issue, previous_and_next_issue_ids_params) }
+					if Redmine::VERSION::MAJOR >= 3 && Redmine::VERSION::MINOR > 0
+						format.html { redirect_back_or_default issue_path(@issue, previous_and_next_issue_ids_params) }
+					else
+						format.html { redirect_back_or_default issue_path(@issue) }
+					end
 	        format.api  { render_api_ok }
 	      end
 	    else
