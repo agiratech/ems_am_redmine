@@ -17,13 +17,13 @@ module IssuesControllerPatch
 			unless User.current.allowed_to?(:add_issues, @issue.project, :global => true)
 				raise ::Unauthorized
 			end
-
 			call_hook(:controller_issues_new_before_save, { :params => params, :issue => @issue })
 			find_linked_projects(params)
 			@issue.project_ids = []
 			@issue.save_attachments(params[:attachments] || (params[:issue] && params[:issue][:uploads]))
 			if @issue.save
 				@issue.projects << @projects if @projects
+				@issue.projects << @issue.parent.projects if @issue.parent
 				call_hook(:controller_issues_new_after_save, { :params => params, :issue => @issue})
 				respond_to do |format|
 					format.html {
@@ -53,6 +53,12 @@ module IssuesControllerPatch
 	    find_linked_projects(params)
 	    @issue.project_ids = []
 	    @issue.projects << @projects if @projects
+			if !@issue.parent
+				@issue.children.each do |issue|
+					issue.project_ids = []
+					issue.projects << @issue.projects
+				end
+			end
 	    @issue.save_attachments(params[:attachments] || (params[:issue] && params[:issue][:uploads]))
 	    saved = false
 	    begin
