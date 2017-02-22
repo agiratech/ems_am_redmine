@@ -32,7 +32,7 @@
 <% end %>
 
 <!-- EMS AM plugin  code -->
-<% if @issue.safe_attribute?('project_ids') && !@issue.try(:parent_issue_id).present? && @issue.tracker.name != "AM ACTION"%>
+<% if @issue.safe_attribute?('project_ids') && !@issue.try(:parent_issue_id).present? && @issue.tracker.name != "Actions"%>
   <p class="select-project">
     <%= label_tag 'issue[project_ids][]','Linked Projects :'%>
   
@@ -77,7 +77,7 @@ $(document).ready(function(){
   });
   $('#multi_select_dropdown').select2();
 
-  if ($( "#issue_tracker_id option:selected" ).text() == "AM ACTION") {
+  if ($( "#issue_tracker_id option:selected" ).text() == "Actions") {
     console.log("changes");
     $('#issue_parent_issue_id').prop('required',true);
   }
