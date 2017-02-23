@@ -70,7 +70,13 @@
     end %>
 
     <% if @issue.projects.present? %>
-      <p><b>Linked Projects:</b><%= @issue.projects.pluck(:name).join(",")%></p>
+      <div class="attrubutes">
+        <div class="attribute">
+          <div class="label">Linked Projects:</div>
+          <div class="value"><%= @issue.projects.pluck(:name).join(",")%></div>
+        </div>
+      </div>
+      
     <% end %>
 
     <%= render_custom_fields_rows(@issue) %>
@@ -127,7 +133,7 @@
     <%= call_hook(:view_issues_show_details_bottom, :issue => @issue) %>
   </table>
   <% if @issue.projects.present? %>
-    <p><b>Linked Projects:</b><%= @issue.projects.pluck(:name).join(",")%></p>
+    <p><b>Linked Projects:</b> <%= @issue.projects.pluck(:name).join(",")%></p>
   <% end %>
 <%end%>
 <% if @issue.description? || @issue.attachments.any? -%>
