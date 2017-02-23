@@ -11,8 +11,9 @@ module ApplicationHelperPatch
 	end
 
 	module InstanceMethods
-		def collect_linked_projects parent_issue_id
-			Issue.find(parent_issue_id).projects.uniq!
+		def select_tracker issue
+			@tracker = Tracker.where(" upper(name) = ?","AM ACTIONS").first
+			@tracker.present? ? @tracker.id : issue.tracker.id
 		end
 	end
 end
