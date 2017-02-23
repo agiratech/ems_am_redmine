@@ -1,8 +1,8 @@
 Redmine::Plugin.register :ems_am_redmine do
-  name 'Ems Am Redmine Plugin'
+  name 'EMS AM Redmine Plugin'
   author 'Agira Technologies'
-  description 'This is a plugin for Redmine'
-  version '0.0.1'
+  description 'This is a plugin for Redmine - AM Events & AM Action'
+  version '1.0.0'
   url 'http://www.agiratech.com/'
   author_url 'http://www.agiratech.com/'
 end
