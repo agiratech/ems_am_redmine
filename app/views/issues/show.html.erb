@@ -135,14 +135,19 @@
 <% if @issue.description? %>
 <div class="description">
   <div class="contextual">
+  <%if Redmine::VERSION::MAJOR >= 3 && Redmine::VERSION::MINOR >= 3 %>
   <%= link_to l(:button_quote), quoted_issue_path(@issue), :remote => true, :method => 'post', :class => 'icon icon-comment' if @issue.notes_addable? %>
+  <%else%>
+  <%= link_to l(:button_quote), quoted_issue_path(@issue), :remote => true, :method => 'post', :class => 'icon icon-comment' if authorize_for('issues', 'edit') %>
+  <% end %>
   </div>
-
   <p><strong><%=l(:field_description)%></strong></p>
   <div class="wiki">
   <%= textilizable @issue, :description, :attachments => @issue.attachments %>
   </div>
 </div>
+
+
 <% end %>
 <%= link_to_attachments @issue, :thumbnails => true %>
 <% end -%>
