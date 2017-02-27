@@ -23,21 +23,11 @@
 
 <% if @issue.safe_attribute? 'tracker_id'%>
   <%if Redmine::VERSION::MAJOR >= 3 && Redmine::VERSION::MINOR >=3 %>
-    <% if @issue.tracker.name.upcase == "AM EVENTS" && (params["issue"] && params["issue"]["parent_issue_id"].present?)%>
-      <p><%= f.select :tracker_id, trackers_options_for_select(@issue), {:selected => (@tracker = Tracker.where(" upper(name) = ?","AM ACTIONS").first).present? ? @tracker.id : @issue.tracker.id,:required => true},
-                    :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
-    <%else%>
-      <p><%= f.select :tracker_id, trackers_options_for_select(@issue), {:required => true},
-                    :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
-    <%end%>
+    <p><%= f.select :tracker_id, trackers_options_for_select(@issue), {:required => true},
+                  :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
   <%else%>
-    <% if @issue.tracker.name.upcase == "AM EVENTS" && (params["issue"] && params["issue"]["parent_issue_id"].present?)%>
-      <p><%= f.select :tracker_id, @issue.project.trackers.collect {|t| [t.name, t.id]}, {:selected => (@tracker = Tracker.where(" upper(name) = ?","AM ACTIONS").first).present? ? @tracker.id : @issue.tracker.id,:required => true},
-                    :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
-    <%else%>
-      <p><%= f.select :tracker_id, @issue.project.trackers.collect {|t| [t.name, t.id]}, {:required => true},
-                    :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
-    <%end%>
+    <p><%= f.select :tracker_id, @issue.project.trackers.collect {|t| [t.name, t.id]}, {:required => true},
+                  :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
   <%end%>
 <% end %>
 
@@ -88,7 +78,6 @@ $(document).ready(function(){
   $('#multi_select_dropdown').select2();
 
   if ($( "#issue_tracker_id option:selected" ).text().toUpperCase() == "AM ACTIONS") {
-    console.log("changes");
     $('#issue_parent_issue_id').prop('required',true);
   }
 

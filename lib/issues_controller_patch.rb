@@ -5,6 +5,7 @@ module IssuesControllerPatch
 		base.class_eval do
 			alias_method_chain :create, :custom_create
 			alias_method_chain :update, :custom_update
+			alias_method_chain :new, :custom_new
 		end
 	end
 
@@ -12,6 +13,17 @@ module IssuesControllerPatch
 	end
 
 	module InstanceMethods
+
+		def new_with_custom_new
+			if @issue.project.name.upcase == "AM PORTFOLIO" && params[:issue] && params[:issue][:parent_issue_id].present?
+				@issue.tracker = Tracker.find_by_name("AM ACTIONS" || "AM Actions")
+				@issue.parent_issue_id = params[:issue][:parent_issue_id]
+			end
+			respond_to do |format|
+				format.html { render :action => 'new', :layout => !request.xhr? }
+				format.js
+			end
+		end
 
 		def create_with_custom_create
 			unless User.current.allowed_to?(:add_issues, @issue.project, :global => true)
