@@ -15,7 +15,7 @@ module IssuesControllerPatch
 	module InstanceMethods
 
 		def new_with_custom_new
-			if @issue.project.name.upcase == "AM PORTFOLIO" && params[:issue] && params[:issue][:parent_issue_id].present?
+			if @issue.tracker.name.upcase == "AM EVENTS" && params[:issue] && params[:issue][:parent_issue_id].present?
 				@issue.tracker = Tracker.find_by_name("AM ACTIONS" || "AM Actions")
 				@issue.parent_issue_id = params[:issue][:parent_issue_id]
 			end
