@@ -32,11 +32,10 @@
 <% end %>
 
 <!-- EMS AM plugin  code -->
-<% if @issue.safe_attribute?('project_ids') && !(params["issue"] && params["issue"]["parent_issue_id"].present?) && @issue.tracker.name.upcase == "AM EVENTS"%>
+<% if @issue.safe_attribute?('project_ids')%>
   <p class="select-project">
     <%= label_tag 'issue[project_ids][]','Linked Projects :'%>
-  
-    <%= select_tag 'issue[project_ids][]', project_tree_options_for_select(@issue.project.projects_list, :selected => @issue.projects.present? ? @issue.projects.uniq! : @issue.project), {multiple:true,:id=>"multi_select_dropdown"} %>
+    <%= select_tag 'issue[project_ids][]', project_tree_options_for_select(@issue.project.projects_list, :selected => @issue.projects.present? ? @issue.projects.uniq! : @issue.try(:parent_issue_id).present? ? Issue.find(@issue.parent_issue_id).projects.uniq! : @issue.project), {multiple:true,:id=>"multi_select_dropdown"} %>
   </p>
 <% end %>
 <!-- EMS AM plugin  code -->
