@@ -23,16 +23,26 @@
 
 <% if @issue.safe_attribute? 'tracker_id'%>
   <%if Redmine::VERSION::MAJOR >= 3 && Redmine::VERSION::MINOR >=3 %>
-    <p><%= f.select :tracker_id, trackers_options_for_select(@issue), {:required => true},
-                  :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
+    <% if @issue.tracker.name.upcase == "AM EVENTS" && (params["issue"] && params["issue"]["parent_issue_id"].present?)%>
+      <p><%= f.select :tracker_id, trackers_options_for_select(@issue), {:selected => (@tracker = Tracker.where(" upper(name) = ?","AM ACTIONS").first).present? ? @tracker.id : @issue.tracker.id,:required => true},
+                    :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
+    <%else%>
+      <p><%= f.select :tracker_id, trackers_options_for_select(@issue), {:required => true},
+                    :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
+    <%end%>
   <%else%>
-    <p><%= f.select :tracker_id, @issue.project.trackers.collect {|t| [t.name, t.id]}, {:required => true},
-                  :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
+    <% if @issue.tracker.name.upcase == "AM EVENTS" && (params["issue"] && params["issue"]["parent_issue_id"].present?)%>
+      <p><%= f.select :tracker_id, @issue.project.trackers.collect {|t| [t.name, t.id]}, {:selected => (@tracker = Tracker.where(" upper(name) = ?","AM ACTIONS").first).present? ? @tracker.id : @issue.tracker.id,:required => true},
+                    :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
+    <%else%>
+      <p><%= f.select :tracker_id, @issue.project.trackers.collect {|t| [t.name, t.id]}, {:required => true},
+                    :onchange => "updateIssueFrom('#{escape_javascript update_issue_form_path(@project, @issue)}', this)" %></p>
+    <%end%>
   <%end%>
 <% end %>
 
 <!-- EMS AM plugin  code -->
-<% if @issue.safe_attribute?('project_ids')%>
+<% if @issue.safe_attribute?('project_ids') && !(params["issue"] && params["issue"]["parent_issue_id"].present?) && @issue.tracker.name.upcase == "AM EVENTS"%>
   <p class="select-project">
     <%= label_tag 'issue[project_ids][]','Linked Projects :'%>
     <%= select_tag 'issue[project_ids][]', project_tree_options_for_select(@issue.project.projects_list, :selected => @issue.projects.present? ? @issue.projects.uniq! : @issue.try(:parent_issue_id).present? ? Issue.find(@issue.parent_issue_id).projects.uniq! : @issue.project), {multiple:true,:id=>"multi_select_dropdown"} %>
